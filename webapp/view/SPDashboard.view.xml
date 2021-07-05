@@ -1,0 +1,148 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.minda.SuppPortalDB.controller.SPDashboard"
+	xmlns:l="sap.ui.layout" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:viz="sap.viz.ui5.controls">
+	<Page title="{i18n>title}">
+		<content>
+			<l:VerticalLayout id="containerLayout" width="100%">
+				<l:BlockLayout background="Dashboard">
+					<l:BlockLayoutRow>
+						<l:BlockLayoutCell >
+							<VBox busy="{viewModel>/busy}" >
+								<OverflowToolbar>
+									<Label design="Bold" text="QPR (Quality Problem Report)" class="customLabelSize"/>
+									<ToolbarSpacer/>
+									<Link text="View All" emphasized="true" class="customLinkColor"/>
+								</OverflowToolbar>
+								<FlexBox class="sapUiMediumMarginTop" alignItems="Center" width="100%" height="100%" direction="{= ${device>/system/phone}? 'Column':'Row'}">
+									<VBox alignContent="Center" alignItems="Center" class="sapUiLargeMarginTop">
+										<layoutData>
+											<FlexItemData growFactor="1"/>
+										</layoutData>
+										<ObjectStatus class="customOSFont" text="{viewModel>/pendingItemsCount}" state="Warning"/>
+										<Label design="Bold" text="Action Pending"/>
+									</VBox>
+									<VBox>
+										<layoutData>
+											<FlexItemData growFactor="2"/>
+										</layoutData>
+										<Label design="Bold" text="Most Reported:"/>
+										<VBox items="{ path: 'viewModel>/pendingItems' }">
+											<VBox class="sapUiTinyMarginTop customVboxBorder">
+												<Text text="{viewModel>MaterialCode} - {viewModel>QprNo}" class="sapUiTinyMarginTop"/>
+												<Text text="{path: 'viewModel>QprDate', formatter: '.setDate'}"/>
+											</VBox>
+										</VBox>
+										<!--<ScrollContainer vertical="true" focusable="true">-->
+										<!--	<List enableBusyIndicator="true" headerText="Most Reported:" growing="true" items="{ path: '/reportedItems' }">-->
+										<!--		<StandardListItem title="{title} - {desc}"/>-->
+										<!--	</List>-->
+										<!--</ScrollContainer>-->
+									</VBox>
+									<VBox alignContent="Center" alignItems="Center" class="sapUiLargeMarginTop">
+										<layoutData>
+											<FlexItemData growFactor="1"/>
+										</layoutData>
+									</VBox>
+								</FlexBox>
+							</VBox>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell >
+							<OverflowToolbar>
+								<Label design="Bold" text="Backlogs" class="customLabelSize"/>
+								<ToolbarSpacer/>
+								<Link text="View All" emphasized="true" class="customLinkColor"/>
+							</OverflowToolbar>
+							<viz:Popover id="idPopOver"></viz:Popover>
+							<viz:VizFrame class="boxShadow" id="idVizFrame" uiConfig="{applicationSet:'fiori'}" height="260px" width="95%"
+								vizProperties="{legend: {visible: false}, title: {visible: false}, categoryAxis: {title: {visible: false}, axisLine: { visible: false } }, valueAxis: {label: {visible: false}, title: {applyAxislineColor: true, style: {fontWeight: 'bold', fontSize: 15}, visible: true}, axisLine: { visible: false } }, plotArea: {dataLabel: {visible: true}, drawingEffect: 'glossy', gap: {barSpacing: 0.005}, dataPointSize: { min: 5, max: 20 }, gridline: {visible: false}, dataPointStyle: { 'rules':[{ 'dataContext': {'Store Name': '10+ Days'}, 'properties': {'color':'red'}}, { 'dataContext': {'Store Name': '8 Days'}, 'properties': {'color':'#0d2b43'}}, { 'dataContext': {'Store Name': '7 Days'}, 'properties': {'color':'#0091D5'}}, { 'dataContext': {'Store Name': '6 Days'}, 'properties': {'color':'#EA6A47'}}, { 'dataContext': {'Store Name': '5 Days'}, 'properties': {'color':'#A5D8DD'}}, { 'dataContext': {'Store Name': '4 Days'}, 'properties': {'color':'#1C4E80'}}, { 'dataContext': {'Store Name': '3 Days'}, 'properties': {'color':'#7E909A'}}, { 'dataContext': {'Store Name': '1 Day'}, 'properties': {'color':'#202020'}}, { 'dataContext': {'Store Name': '10+ Days'}, 'properties': {'color':'red'}}] }}}"
+								vizType='bar'>
+								<viz:dataset>
+									<viz.data:FlattenedDataset data="{/milk}">
+										<viz.data:dimensions>
+											<viz.data:DimensionDefinition name="Store Name" value="{Store Name}"/>
+										</viz.data:dimensions>
+										<viz.data:measures>
+											<viz.data:MeasureDefinition name="Missed Schedules" value="{Revenue}"/>
+										</viz.data:measures>
+									</viz.data:FlattenedDataset>
+								</viz:dataset>
+								<viz:feeds>
+									<viz.feeds:FeedItem id='valueAxisFeed' uid="valueAxis" type="Measure" values="Missed Schedules"/>
+									<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Store Name"/>
+								</viz:feeds>
+							</viz:VizFrame>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow>
+						<l:BlockLayoutCell >
+							<VBox >
+								<OverflowToolbar>
+									<Label design="Bold" text="Monthly GR Rejection Rate (PPM) for Past 6 Months" class="customLabelSize"/>
+									<ToolbarSpacer/>
+									<Link text="Load/ Reload Graph" emphasized="true" class="customLinkColor"/>
+								</OverflowToolbar>
+								<viz:Popover id="idPopOver1"></viz:Popover>
+								<viz:VizFrame class="boxShadow" id="idVizFrame1" uiConfig="{applicationSet:'fiori'}" height="250px" width="95%"
+									vizProperties="{legend: {visible: false}, title: {visible: false}, categoryAxis: {title: {visible: false}, axisLine: { visible: false } }, valueAxis: {label: {visible: false}, title: {visible: true}, axisLine: { visible: false } }, plotArea: {dataLabel: {visible: true}, drawingEffect: 'glossy', gap: {barSpacing: 1}, dataPointSize: { min: 5, max: 80 }, gridline: {visible: true}, dataPointStyle: { 'rules':[{ 'dataContext': {'Store Name': 'Jan'}, 'properties': {'color':'red'}}, { 'dataContext': {'Store Name': 'Feb'}, 'properties': {'color':'#0d2b43'}}, { 'dataContext': {'Store Name': 'Mar'}, 'properties': {'color':'#0091D5'}}, { 'dataContext': {'Store Name': 'Apr'}, 'properties': {'color':'#EA6A47'}}, { 'dataContext': {'Store Name': 'May'}, 'properties': {'color':'#A5D8DD'}}, { 'dataContext': {'Store Name': 'Jun'}, 'properties': {'color':'#1C4E80'}}] }}}"
+									vizType='column'>
+									<viz:dataset>
+										<viz.data:FlattenedDataset data="{/milk1}">
+											<viz.data:dimensions>
+												<viz.data:DimensionDefinition name="Store Name" value="{Store Name}"/>
+											</viz.data:dimensions>
+											<viz.data:measures>
+												<viz.data:MeasureDefinition name="PPM" value="{Revenue}"/>
+											</viz.data:measures>
+										</viz.data:FlattenedDataset>
+									</viz:dataset>
+									<viz:feeds>
+										<viz.feeds:FeedItem id='valueAxisFeed1' uid="valueAxis" type="Measure" values="PPM"/>
+										<viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Store Name"/>
+									</viz:feeds>
+								</viz:VizFrame>
+							</VBox>
+						</l:BlockLayoutCell>
+						<l:BlockLayoutCell >
+							<OverflowToolbar>
+								<Label design="Bold" text="Most Backlogs" class="customLabelSize"/>
+								<ToolbarSpacer/>
+							</OverflowToolbar>
+							<VBox class="boxShadow" width="95%">
+								<Table items="{ path: '/collection', sorter: { path: 'name' } }" alternateRowColors="true">
+									<columns>
+										<Column >
+											<Label design="Bold" text="Material Code"/>
+										</Column>
+										<Column >
+											<Label design="Bold" text="Material Name"/>
+										</Column>
+										<Column >
+											<Label design="Bold" text="Pending Since"/>
+										</Column>
+										<Column >
+											<Label design="Bold" text="Pending Quantity"/>
+										</Column>
+										<Column >
+											<Label design="Bold" text="Failed Delivery"/>
+										</Column>
+									</columns>
+									<items>
+										<ColumnListItem>
+											<cells>
+												<Text text="{code}"/>
+												<Text text="{name}"/>
+												<Text text="{since}"/>
+												<Text text="{quan}"/>
+												<Text text="{fd}"/>
+											</cells>
+										</ColumnListItem>
+									</items>
+								</Table>
+							</VBox>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+				</l:BlockLayout>
+			</l:VerticalLayout>
+		</content>
+	</Page>
+</mvc:View>
