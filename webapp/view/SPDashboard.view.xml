@@ -1,13 +1,33 @@
 <mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" controllerName="com.minda.SuppPortalDB.controller.SPDashboard"
-	xmlns:l="sap.ui.layout" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data"
+	xmlns:l="sap.ui.layout" xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds" xmlns:viz.data="sap.viz.ui5.data" xmlns:f="sap.ui.layout.form"
 	xmlns:viz="sap.viz.ui5.controls">
-	<Page title="{i18n>title}">
+	<Page title="{i18n>title}" showHeader="false">
 		<content>
 			<l:VerticalLayout id="containerLayout" width="100%">
 				<l:BlockLayout background="Dashboard">
-					<l:BlockLayoutRow>
+					<l:BlockLayoutRow visible="{viewModel>/showAdvancedSearch}">
 						<l:BlockLayoutCell >
-							<VBox busy="{viewModel>/busy}" >
+							<f:SimpleForm id="SimpleFormChange480_12120" editable="true" layout="ResponsiveGridLayout" labelSpanXL="2" labelSpanL="2"
+								labelSpanM="12" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="2" emptySpanL="2" emptySpanM="2" emptySpanS="2" columnsXL="2"
+								columnsL="2" columnsM="1" singleContainerFullSize="false">
+								<f:content>
+									<core:Title text=""/>
+									<Label text="Plant"/>
+									<ComboBox width="100%" placeholder="Select Plant" items="{ path: 'plantModel>/plants', sorter: { path: 'id' } }" change="onChangePlant">
+										<core:Item key="{plantModel>id}" text="{plantModel>name} ({plantModel>id})"/>
+									</ComboBox>
+									<core:Title text=""/>
+									<Label text="Vendor"/>
+									<ComboBox width="100%" placeholder="Select Vendor" items="{ path: 'vendorModel>/vendors', sorter: { path: 'id' } }" change="onChangeVendor">
+										<core:Item key="{vendorModel>id}" text="{vendorModel>name} ({vendorModel>id})"/>
+									</ComboBox>
+								</f:content>
+							</f:SimpleForm>
+						</l:BlockLayoutCell>
+					</l:BlockLayoutRow>
+					<l:BlockLayoutRow>
+						<l:BlockLayoutCell busy="{viewModel>/busy}">
+							<VBox >
 								<OverflowToolbar>
 									<Label design="Bold" text="QPR (Quality Problem Report)" class="customLabelSize"/>
 									<ToolbarSpacer/>
@@ -46,7 +66,7 @@
 								</FlexBox>
 							</VBox>
 						</l:BlockLayoutCell>
-						<l:BlockLayoutCell >
+						<l:BlockLayoutCell busy="{viewModel>/busy}">
 							<OverflowToolbar>
 								<Label design="Bold" text="Backlogs" class="customLabelSize"/>
 								<ToolbarSpacer/>
@@ -74,7 +94,7 @@
 						</l:BlockLayoutCell>
 					</l:BlockLayoutRow>
 					<l:BlockLayoutRow>
-						<l:BlockLayoutCell >
+						<l:BlockLayoutCell busy="{viewModel>/busy}">
 							<VBox >
 								<OverflowToolbar>
 									<Label design="Bold" text="Monthly GR Rejection Rate (PPM) for Past 6 Months" class="customLabelSize"/>
@@ -102,7 +122,7 @@
 								</viz:VizFrame>
 							</VBox>
 						</l:BlockLayoutCell>
-						<l:BlockLayoutCell >
+						<l:BlockLayoutCell busy="{viewModel>/busy}">
 							<OverflowToolbar>
 								<Label design="Bold" text="Most Backlogs" class="customLabelSize"/>
 								<ToolbarSpacer/>

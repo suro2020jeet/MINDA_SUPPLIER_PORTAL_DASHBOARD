@@ -17,6 +17,23 @@ sap.ui.define([
 		 * @override
 		 */
 		init: function () {
+			if (sap.ui.getCore().plants == undefined) {
+ 				sap.ui.getCore().plants = {
+ 					aInternal: "",
+ 					aListener: function (val) {},
+ 					set plant(val) {
+ 						this.aInternal = val;
+ 						this.aListener(val);
+ 					},
+ 					get plant() {
+ 						return this.aInternal;
+ 					},
+ 					registerListener: function (listener) {
+ 						debugger;
+ 						this.aListener = listener;
+ 					}
+ 				};
+ 			}
 			// call the base component's init function
 			UIComponent.prototype.init.apply(this, arguments);
 

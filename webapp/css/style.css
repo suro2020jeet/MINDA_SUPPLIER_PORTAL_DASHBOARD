@@ -28,3 +28,6 @@
     font-weight: bold;
     padding: 20px;
 }
+.sapUiFormTitleH5 {
+    display: none !important;
+}
